@@ -1,0 +1,11 @@
+<div class="wrapper">
+  <div class="container">
+    <button class="btn btn-primary" (click)="onButtonClick('inc')">Inc</button>
+    <button class="btn btn-primary" (click)="onButtonClick('dec')" [disabled]="counter() === 0">Dec</button>
+    <p>
+      {{counter()}}
+    </p>
+  </div>
+</div>
+
+<router-outlet />
