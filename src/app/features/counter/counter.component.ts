@@ -1,16 +1,16 @@
 import { Component, inject } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { AppState } from '@states';
+import { AppState } from '@states/app.state';
 import { AsyncPipe } from '@angular/common';
-import { selectCount } from '@states/selectors';
-import { decrement, increment, reset } from '@states/actions';
+import { selectCount } from '@states/counter/counter.selectors';
+import { decrement, increment, reset } from '@states/counter/counter.actions';
 
 @Component({
   selector: 'app-counter',
   template: `
     <div class="counter">
       <button class="btn btn-primary" (click)="increment()">Inc</button>
-      <button class="btn btn-secondary" (click)="decrement()" [disabled]="(count$ | async) === 0">Dec</button>
+      <button class="btn btn-secondary" (click)="decrement()">Dec</button>
       <p>{{count$ | async}}</p>
       <button class="btn btn-danger" (click)="reset()">Reset</button>
     </div>

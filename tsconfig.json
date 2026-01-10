@@ -17,10 +17,8 @@
     "baseUrl": ".",
     "paths": {
       "@env/*": ["src/environments/*"],
-      "@states": ["src/app/states/index.ts"],
-      "@states/actions": ["src/app/states/actions/index.ts"],
-      "@states/reducers": ["src/app/states/reducers/index.ts"],
-      "@states/selectors": ["src/app/states/selectors/index.ts"]
+      "@states/*": ["src/app/states/*"],
+      "@interfaces": ["src/app/config/index.ts"]
     }
   },
   "angularCompilerOptions": {

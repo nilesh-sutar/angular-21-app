@@ -1,0 +1,33 @@
+@if((cartItems$ | async)?.length === 0) {
+<p>Your cart is empty.</p>
+<a routerLink="/products">Explore Products</a>
+}
+@else {
+<table class="table table-light">
+    <tbody>
+        @for (item of cartItems$ | async; track item.id) {
+        <tr>
+            <td>{{ item.title }}</td>
+            <td>{{ item.price }}</td>
+            <td>
+                <button class="btn btn-danger btn-sm" (click)="onRemove(item)">Remove</button>
+            </td>
+            <td>
+                <button class="btn btn-danger btn-sm" (click)="onUpdateQuantity(item, 1)">+</button>
+                {{ item.quantity }}
+                <button class="btn btn-danger btn-sm"
+                    (click)="item.quantity !== 1 ? onUpdateQuantity(item, -1) : onRemove(item)">-</button>
+            </td>
+        </tr>
+        }
+    </tbody>
+    <tfoot>
+        <tr>
+            <td colspan="3"><strong>Total:</strong> ${{ (cartTotal$ | async)?.toFixed(2) }}</td>
+            <td>
+                <button class="btn btn-warning" (click)="onEmpty()">Empty Cart</button>
+            </td>
+        </tr>
+    </tfoot>
+</table>
+}

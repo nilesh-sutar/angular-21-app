@@ -1,0 +1,14 @@
+<div class="card mb-4">
+    <img class="card-img-top img-fluid mx-auto" [src]="product()?.image" alt="Card image">
+    <div class="card-body">
+        <h4 class="card-title text-truncate">{{ product()?.title }}</h4>
+        <p class="card-text text-truncate">{{ product()?.description }}</p>
+        <p>Category: {{ product()?.category }}</p>
+        <p>Price: ${{ product()?.price }}</p>
+        <div class="d-flex justify-content-between">
+            <a class="btn btn-primary" (click)="onAdd(product())">Add to cart</a>
+            <a routerLink="/products/{{ product()?.id }}" class="btn btn-primary">View Product</a>
+        </div>
+    </div>
+
+</div>
