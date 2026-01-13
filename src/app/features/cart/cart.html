@@ -1,31 +1,35 @@
-@if((cartItems$ | async)?.length === 0) {
+@if(cartStore.products().length === 0) {
 <p>Your cart is empty.</p>
 <a routerLink="/products">Explore Products</a>
 }
 @else {
 <table class="table table-light">
     <tbody>
-        @for (item of cartItems$ | async; track item.id) {
+        @for (item of cartStore.products(); track item.id) {
         <tr>
-            <td>{{ item.title }}</td>
+            <td><img class="img-thumbnail" [routerLink]="'/products/' + item.id" [src]="item.image" alt=""></td>
+            <td><a [routerLink]="'/products/' + item.id">{{ item.title }}</a></td>
             <td>{{ item.price }}</td>
             <td>
-                <button class="btn btn-danger btn-sm" (click)="onRemove(item)">Remove</button>
+                <button class="btn btn-danger btn-sm" (click)="cartStore.removeFromCart(item)">Remove</button>
             </td>
             <td>
-                <button class="btn btn-danger btn-sm" (click)="onUpdateQuantity(item, 1)">+</button>
-                {{ item.quantity }}
                 <button class="btn btn-danger btn-sm"
-                    (click)="item.quantity !== 1 ? onUpdateQuantity(item, -1) : onRemove(item)">-</button>
+                    (click)="item.quantity !== 1 ? cartStore.decrementQuantity(item) : cartStore.removeFromCart(item)">-</button>
+                {{ item.quantity }}
+                <button class="btn btn-danger btn-sm" (click)="cartStore.incrementQuantity(item)">+</button>
             </td>
         </tr>
         }
     </tbody>
     <tfoot>
         <tr>
-            <td colspan="3"><strong>Total:</strong> ${{ (cartTotal$ | async)?.toFixed(2) }}</td>
+            <td colspan="3"><strong>Total:</strong> {{ cartStore.totalPrice() | currency}}</td>
             <td>
-                <button class="btn btn-warning" (click)="onEmpty()">Empty Cart</button>
+                <button class="btn btn-warning" (click)="cartStore.emptyCart()">Empty Cart</button>
+            </td>
+            <td>
+                <button class="btn btn-warning">Checkout</button>
             </td>
         </tr>
     </tfoot>

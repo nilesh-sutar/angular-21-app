@@ -19,7 +19,7 @@
       <div class="d-flex me-3">
         <a class="nav-link text-white" routerLink="/cart">Cart</a>
         <span class="badge">
-          {{ cartCount$ | async }}
+          {{ cartStore.products().length }}
         </span>
       </div>
       <!-- <form class="d-flex">

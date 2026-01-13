@@ -13,4 +13,9 @@ export class ProductApi {
     return this.http.get<Product[]>('https://fakestoreapi.com/products').
       pipe(map(products => products.map(product => ({ ...product, quantity: 1 }))));
   }
+
+  getProductById(id: number) {
+    return this.http.get<Product>(`https://fakestoreapi.com/products/${id}`).
+      pipe(map(product => ({ ...product, quantity: 1 })));
+  }
 }

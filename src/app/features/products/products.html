@@ -1,15 +1,21 @@
 <div class="products">
     <h2>Products</h2>
+    @if (productStore.isLoading()) {
+    <div class="alert alert-info" role="alert">
+        Loading products...
+    </div>
+    } @else {
     <div class="row my-2">
-        @for (product of products$ | async; track product.id) {
+        @for (product of productStore.products(); track product.id) {
         <div class="col-md-4">
             <app-product-card [product]="product" (handleAdd)="onAdd($event)" />
         </div>
         }
     </div>
-    @if (productsError$ | async) {
+    @if (productsError() != undefined) {
     <div class="alert alert-danger" role="alert">
-        Error loading products: {{ productsError$ | async }}
+        Error loading products: {{ productsError() }}
     </div>
+    }
     }
 </div>

@@ -6,8 +6,13 @@
         <p>Category: {{ product()?.category }}</p>
         <p>Price: ${{ product()?.price }}</p>
         <div class="d-flex justify-content-between">
+            @if (isInCart() === false){
             <a class="btn btn-primary" (click)="onAdd(product())">Add to cart</a>
-            <a routerLink="/products/{{ product()?.id }}" class="btn btn-primary">View Product</a>
+            } @else {
+            <a class="btn btn-warning" routerLink="/cart">Go to cart</a>
+            }
+            <a routerLink="/products/{{ product()?.id }}" *appShowIf="config().showViewProduct"
+                class="btn btn-secondary">View Product</a>
         </div>
     </div>
 

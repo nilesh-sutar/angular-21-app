@@ -1,6 +1,6 @@
 import { AsyncPipe } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Component, inject, OnInit } from '@angular/core';
+import { Component, effect, inject, OnInit, signal } from '@angular/core';
 import { Product } from '@interfaces';
 import { Store } from '@ngrx/store';
 import { selectAllProducts, selectProductError } from '@states/products/product.selectors';
@@ -10,25 +10,26 @@ import { ProductApi } from 'src/app/shared/services/product-api';
 import { addToCart } from 'src/app/states/cart/cart.actions';
 import { fetchProducts } from 'src/app/states/products/product.actions';
 import { AppState } from 'src/app/states/app.state';
+import { CartStore } from 'src/app/store/cart.store';
+import { ProductStore } from 'src/app/store/product.store';
 
 @Component({
   selector: 'app-products',
-  imports: [AsyncPipe, ProductCard],
+  imports: [ProductCard],
   templateUrl: './products.html',
   styleUrl: './products.scss',
 })
 export class Products implements OnInit {
   store = inject(Store<AppState>);
-  products$!: Observable<Product[]>;
-  productsError$!: Observable<string | undefined>;
-
+  productsError = signal<string | undefined>(undefined);
+  cartStore = inject(CartStore);
+  productStore = inject(ProductStore);
   ngOnInit() {
-    this.store.dispatch(fetchProducts());
-    this.products$ = this.store.select(selectAllProducts);
-    this.productsError$ = this.store.select(selectProductError);
+    this.productStore.fetchProducts();
+    this.productsError.set(this.productStore.error?.() ?? undefined);
   }
 
   onAdd(product: Product) {
-    this.store.dispatch(addToCart({ product }));
+    this.cartStore.addToCart(product);
   }
 }
