@@ -27,7 +27,7 @@ export const CartStore = signalStore(
     withMethods(({ products, loadingProductId, ...store }) => ({
         addToCart: async (product: Product) => {
             patchState(store, { loadingProductId: product.id });
-            await new Promise(resolve => setTimeout(resolve, 1000)); // 1 second delay
+            await simulateDelay(1000); // 1 second delay
             const updatedProducts = [...products(), product];
             patchState(store, { products: updatedProducts, loadingProductId: null });
             store.toasterService.showSuccess('Product added to cart successfully');
@@ -40,16 +40,26 @@ export const CartStore = signalStore(
         emptyCart: () => {
             patchState(store, { products: [] });
         },
-        incrementQuantity: (product: Product) => {
+        incrementQuantity: async (product: Product) => {
+            patchState(store, { loadingProductId: product.id });
             const updatedProducts = products().map(p => p.id === product.id ? { ...p, quantity: p.quantity + 1 } : p);
-            patchState(store, { products: updatedProducts });
+            await simulateDelay(1000); // 1 second delay
+            patchState(store, { products: updatedProducts, loadingProductId: null });
+            store.toasterService.showSuccess(`You've changed '${product.title}' QUANTITY to '${product.quantity + 1}'`);
         },
-        decrementQuantity: (product: Product) => {
+        decrementQuantity: async (product: Product) => {
+            patchState(store, { loadingProductId: product.id });
             const updatedProducts = products().map(p => p.id === product.id ? { ...p, quantity: p.quantity - 1 } : p);
-            patchState(store, { products: updatedProducts });
+            await simulateDelay(1000); // 1 second delay
+            patchState(store, { products: updatedProducts, loadingProductId: null });
+            store.toasterService.showSuccess(`You've changed '${product.title}' QUANTITY to '${product.quantity - 1}'`);
         }
     }))
 );
+
+export function simulateDelay(ms: number): Promise<void> {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 export function calculateTotal(products: Product[]): number {
     return products.reduce((total, product) => total + (product.price * product.quantity), 0);

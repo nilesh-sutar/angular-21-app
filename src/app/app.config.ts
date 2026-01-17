@@ -30,6 +30,7 @@ export const appConfig: ApplicationConfig = {
     provideAnimations(), // required animations providers
     provideToastr({
       positionClass: 'toast-bottom-right',
+      progressBar: true
     }), // Toastr providers
   ]
 };
