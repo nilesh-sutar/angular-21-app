@@ -11,11 +11,11 @@
             <td><a [routerLink]="'/products/' + item.id">{{ item.title }}</a></td>
             <td>{{ item.price }}</td>
             <td>
-                <button class="btn btn-danger btn-sm" (click)="cartStore.removeFromCart(item)">Remove</button>
+                <button class="btn btn-danger btn-sm" (click)="onRemove(item)">Remove</button>
             </td>
             <td>
                 <button class="btn btn-danger btn-sm"
-                    (click)="item.quantity !== 1 ? cartStore.decrementQuantity(item) : cartStore.removeFromCart(item)">-</button>
+                    (click)="item.quantity !== 1 ? cartStore.decrementQuantity(item) : onRemove(item)">-</button>
                 {{ item.quantity }}
                 <button class="btn btn-danger btn-sm" (click)="cartStore.incrementQuantity(item)">+</button>
             </td>

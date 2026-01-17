@@ -4,7 +4,7 @@ import { Injectable } from '@angular/core';
 export class AuthService {
     private _token: string | null = null;
 
-    login(username: string, password: string) {
+    login(_username: string, _password: string) {
         // stub: replace with real API call
         this._token = 'fake-token';
         return Promise.resolve(true);

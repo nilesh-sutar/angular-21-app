@@ -7,7 +7,9 @@
         <p>Price: ${{ product()?.price }}</p>
         <div class="d-flex justify-content-between">
             @if (isInCart() === false){
-            <a class="btn btn-primary" (click)="onAdd(product())">Add to cart</a>
+            <a class="btn btn-primary" (click)="onAdd(product())">
+                {{ cartStore.loadingProductId() === product()?.id ? 'Adding to cart...' : 'Add to Cart' }}
+            </a>
             } @else {
             <a class="btn btn-warning" routerLink="/cart">Go to cart</a>
             }

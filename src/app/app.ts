@@ -4,7 +4,6 @@ import { map } from 'rxjs';
 import { selectCartProducts } from './states/cart/cart.selectors';
 import { AppState } from './states/app.state';
 import { Store } from '@ngrx/store';
-import { AsyncPipe } from '@angular/common';
 import { CartStore } from './store/cart.store';
 
 @Component({
