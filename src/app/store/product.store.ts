@@ -2,11 +2,10 @@ import { inject } from "@angular/core";
 import { Product } from "@interfaces";
 import { patchState, signalStore, withMethods, withProps, withState } from '@ngrx/signals';
 import { ProductApi } from "../shared/services/product-api";
-import { CartStore } from "./cart.store";
 
 export interface ProductState {
     products: Product[];
-    error?: string;
+    error: string | null;
     isLoading: boolean;
     product?: Product;
 }
@@ -23,9 +22,8 @@ export const ProductStore = signalStore(
     withState(productInitialState),
     withProps(() => ({
         productApiService: inject(ProductApi),
-        cartStore: inject(CartStore)
     })),
-    withMethods(({ productApiService, cartStore, ...store }) => ({
+    withMethods(({ productApiService, ...store }) => ({
         fetchProducts: async () => {
             patchState(store, { isLoading: true, error: "" });
             try {

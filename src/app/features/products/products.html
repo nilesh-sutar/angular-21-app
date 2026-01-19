@@ -12,9 +12,10 @@
         </div>
         }
     </div>
-    @if (productsError() != undefined) {
+
+    @if (productStore.error()) {
     <div class="alert alert-danger" role="alert">
-        Error loading products: {{ productsError() }}
+        Error loading products: {{ productStore.error() }}
     </div>
     }
     }
