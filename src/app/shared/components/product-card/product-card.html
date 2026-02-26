@@ -1,20 +1,27 @@
 <div class="card mb-4">
-    <img class="card-img-top img-fluid mx-auto" [src]="product()?.image" alt="Card image">
+    <img class="card-img-top img-fluid mx-auto cursor-pointer" routerLink="/products/{{ product()?.id }}"
+        [src]="product()?.image" alt="Card image">
     <div class="card-body">
-        <h4 class="card-title text-truncate">{{ product()?.title }}</h4>
+        <h6 class="card-title text-truncate">{{ product()?.title }}</h6>
         <p class="card-text text-truncate">{{ product()?.description }}</p>
         <p>Category: {{ product()?.category }}</p>
         <p>Price: ${{ product()?.price }}</p>
         <div class="d-flex justify-content-between">
+            @if(config().showAddToCart) {
             @if (isInCart() === false){
-            <a class="btn btn-primary" (click)="onAdd(product())">
-                {{ cartStore.loadingProductId() === product()?.id ? 'Adding to cart...' : 'Add to Cart' }}
-            </a>
+            <app-button [config]="{color:'primary', label: buttonLabel()}" (onClick)="onAdd(product())">
+                <span class="material-icons" icon>
+                    add_shopping_cart
+                </span>
+            </app-button>
             } @else {
-            <a class="btn btn-warning" routerLink="/cart">Go to cart</a>
+            <app-button [config]="{color:'warning', label: 'Go to cart'}" (onClick)="navigateTo('/cart')">
+                <span class="material-icons" icon>
+                    arrow_outward
+                </span>
+            </app-button>
             }
-            <a routerLink="/products/{{ product()?.id }}" *appShowIf="config().showViewProduct"
-                class="btn btn-secondary">View Product</a>
+            }
         </div>
     </div>
 

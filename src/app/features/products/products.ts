@@ -19,6 +19,7 @@ export class Products implements OnInit {
   productStore = inject(ProductStore);
 
   ngOnInit() {
+    if (this.productStore.products().length > 0) return;
     this.productStore.fetchProducts();
     this.productsError.set(this.productStore.error?.() ?? undefined);
   }

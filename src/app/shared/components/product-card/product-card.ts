@@ -1,36 +1,45 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input, output } from '@angular/core';
+import { Router, RouterLink } from "@angular/router";
 import { Product } from '@interfaces';
-import { RouterLink } from "@angular/router";
 import { CartStore } from 'src/app/store/cart.store';
-import { ShowIfDirective } from '../../directives/app-show-if.directive';
+import { Button } from "../button/button";
 
 interface ProductCardConfig {
-  showViewProduct: boolean;
+  showAddToCart?: boolean;
 }
 @Component({
   selector: 'app-product-card',
-  imports: [RouterLink, ShowIfDirective],
+  imports: [RouterLink, Button],
   templateUrl: './product-card.html',
-  styleUrl: './product-card.scss',
+  styleUrls: ['./product-card.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProductCard {
 
   product = input<Product | null>(null);
   config = input<ProductCardConfig>({
-    showViewProduct: true
+    showAddToCart: true
   });
   handleAdd = output<Product>();
   cartStore = inject(CartStore);
+  router = inject(Router);
 
   onAdd(product: Product | null) {
     if (!product) return;
     this.handleAdd.emit(product);
   }
 
+  navigateTo(path: string) {
+    this.router.navigate([path]);
+  }
+
   isInCart = computed(() => {
     const product = this.product();
     if (!product) return false;
     return this.cartStore.products().some(p => p.id === product.id);
+  });
+
+  buttonLabel = computed(() => {
+    return this.cartStore.loadingProductId() === this.product()?.id ? 'Adding to cart...' : 'Add to Cart';
   });
 }

@@ -1,3 +1,4 @@
+<h2>Cart</h2>
 @if(cartStore.products().length === 0) {
 <div class="card">
     <div class="card-body">
@@ -22,7 +23,8 @@
                                 <div class="d-flex align-items-center gap-3">
                                     <img class="img-thumbnail" [routerLink]="'/products/' + item.id" [src]="item.image"
                                         alt="">
-                                    <div [class.loading]="cartStore.loadingProductId() === item.id">
+                                    <div [class.loading]="cartStore.loadingProductId() === item.id"
+                                        class="d-flex gap-3">
                                         <button class="btn btn-danger btn-sm"
                                             (click)="item.quantity !== 1 ? cartStore.decrementQuantity(item) : onRemove(item)">-</button>
                                         {{ item.quantity }}

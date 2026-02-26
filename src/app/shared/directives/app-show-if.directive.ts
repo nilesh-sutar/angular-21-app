@@ -1,12 +1,12 @@
 import {
     Directive,
-    Input,
-    TemplateRef,
-    ViewContainerRef,
     effect,
     inject,
     Injector,
-    signal
+    Input,
+    signal,
+    TemplateRef,
+    ViewContainerRef
 } from '@angular/core';
 
 @Directive({
@@ -33,8 +33,9 @@ export class ShowIfDirective {
     }
 
     @Input()
-    set appShowIf(value: boolean) {
-        this.condition.set(value);
+    set appShowIf(value: boolean | undefined) {
+        // coerce undefined to false so templates don't complain about possible undefined
+        this.condition.set(!!value);
     }
 
     @Input()

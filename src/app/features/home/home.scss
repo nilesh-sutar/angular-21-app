@@ -1,0 +1,91 @@
+ .carousel {
+     .slide-container {
+         display: flex;
+         justify-content: space-around;
+         align-items: center;
+         gap: 20px;
+         padding: 20px;
+     }
+
+     .slide-item {
+         text-align: center;
+         flex: 1;
+         width: 300px;
+
+         p {
+             font-size: 14px;
+             word-wrap: break-word;
+             overflow: hidden;
+             text-overflow: ellipsis;
+             max-height: 50px;
+         }
+     }
+
+     .carousel-control-prev {
+         left: -100px;
+     }
+
+     .carousel-control-next {
+         right: -100px;
+     }
+ }
+
+ ::ng-deep app-product-card {
+     .card {
+         width: 300px;
+         border-radius: 8px;
+         overflow: hidden;
+         /* This clips the text when it's "off-screen" */
+         position: relative;
+         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+         font-family: sans-serif;
+         cursor: pointer;
+     }
+
+     .card img {
+         width: 100%;
+         display: block;
+         transition: transform 0.5s ease;
+     }
+
+     /* 1. Set the initial state of the details */
+     .card-body {
+         position: absolute;
+         bottom: 0;
+         left: 0;
+         right: 0;
+         background: white;
+         padding: 15px;
+         transform: translateY(100%);
+         /* Pushes it fully down out of view */
+         transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+     }
+
+     /* 2. The Hover State */
+     .card:hover .card-body {
+         transform: translateY(0);
+         /* Slides it back up into view */
+     }
+
+     /* Optional: Slightly zoom the image when hovering */
+     .card:hover .card img {
+         transform: scale(1.05);
+     }
+
+     /* Basic styling for the text */
+     .card-body h3 {
+         font-size: 1rem;
+         margin-bottom: 8px;
+     }
+
+     .card-body p {
+         font-size: 0.85rem;
+         color: #555;
+         margin: 4px 0;
+     }
+
+     .price {
+         font-weight: bold;
+         color: #000;
+     }
+ }
