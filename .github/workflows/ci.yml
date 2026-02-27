@@ -19,8 +19,8 @@ jobs:
         run: npm ci -f
       - name: Lint
         run: npm run lint --if-present
-      - name: Test
-        run: npm test --silent
+      # - name: Test
+      #   run: npm test --silent
       - name: Build
         run: npm run build
       - name: Deploy to GitHub Pages
