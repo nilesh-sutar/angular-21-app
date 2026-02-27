@@ -22,7 +22,10 @@ jobs:
       # - name: Test
       #   run: npm test --silent
       - name: Build
-        run: npm run build -- --base-href=/angular-21-app/
+        run: |
+          npm run build -- --base-href=/angular-21-app/
+          # ensure GitHub Pages serves static files, not Jekyll
+          touch dist/angular21demo/browser/.nojekyll
 
       # Deploy main branch to root
       - name: Deploy main to GitHub Pages
