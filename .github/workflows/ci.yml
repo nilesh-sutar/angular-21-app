@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches: [feature/ngrx-signals]
   pull_request:
-    branches: [main]
+    branches: [feature/ngrx-signals]
 
 jobs:
   build:
@@ -22,4 +22,10 @@ jobs:
       - name: Test
         run: npm test --silent
       - name: Build
-        run: npm run build --if-present
+        run: npm run build
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        if: github.event_name == 'push'
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist/angular21demo
