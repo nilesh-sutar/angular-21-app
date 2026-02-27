@@ -30,7 +30,7 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist/angular21demo
+          publish_dir: ./dist/angular21demo/browser
           cname: nilesh-sutar.github.io
 
       # Deploy feature branches to subdirectories
@@ -39,5 +39,5 @@ jobs:
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist/angular21demo
+          publish_dir: ./dist/angular21demo/browser
           destination_dir: ${{ github.ref_name }}
