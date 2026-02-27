@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { AuthGuard } from './shared/guards/auth.guard';
 
 export const routes: Routes = [
     { path: '', pathMatch: 'full', redirectTo: 'home' },
@@ -25,6 +26,11 @@ export const routes: Routes = [
     {
         path: 'cart',
         loadComponent: () => import('./features/cart/cart').then(m => m.Cart)
+    },
+    {
+        path: 'user',
+        canActivate: [AuthGuard],
+        loadComponent: () => import('./features/user/user').then(m => m.User)
     },
     {
         path: 'not-found',

@@ -47,9 +47,10 @@ import { CartStore } from 'src/app/store/cart.store';
                   class="btn btn-primary dropdown-toggle btn-sm"
                   data-bs-toggle="dropdown"
                 >
-                  {{ (authStore.userData()?.name.firstname +" "+ authStore.userData()?.name.lastname | uppercase) || 'User' }}
+                  {{ (authStore.userData()?.name?.firstname +" "+ authStore.userData()?.name?.lastname | uppercase) || 'User' }}
                 </button>
                 <ul class="dropdown-menu">
+                  <li><a class="dropdown-item" routerLink="/user">Profile</a></li>
                   <li><a class="dropdown-item" (click)="authStore.logout()">Logout</a></li>
                 </ul>
               </div>

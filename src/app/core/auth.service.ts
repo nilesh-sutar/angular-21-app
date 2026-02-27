@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
+import { User } from '../store/auth.store';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
@@ -15,7 +16,7 @@ export class AuthService {
     }
 
    getUserData(id="1") {
-          return this.http.get<{ token: string }>(`https://fakestoreapi.com/users/${id}`)
+       return this.http.get<User>(`https://fakestoreapi.com/users/${id}`)
     }
 
     get token() {

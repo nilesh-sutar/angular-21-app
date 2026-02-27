@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, inject, OnInit, signal } from '@angular/core';
 import { Field, form } from '@angular/forms/signals';
-import { Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { Button } from "src/app/shared/components/button/button";
 import { NgxToasterService } from 'src/app/shared/services/ngx-toaster.service';
 import { AuthService } from '../../core/auth.service';
@@ -56,6 +56,7 @@ export class Login implements OnInit {
   authStore = inject(AuthStore);
   router = inject(Router);
   toasterService = inject(NgxToasterService);
+  activatedRoute = inject(ActivatedRoute);
 
   ngOnInit(): void { }
 
@@ -69,8 +70,9 @@ export class Login implements OnInit {
 
   async onSubmit() {
     await this.authStore.login(this.loginModel().username, this.loginModel().password);
+    const redirectUrl = this.activatedRoute.snapshot.queryParams['returnUrl'] || '/home';
     if (this.authStore.isAuthenticated()) {
-      this.router.navigate(['/home']);
+      this.router.navigate([redirectUrl]);
     } else {
       this.toasterService.showError(this.authStore.error() || 'Login failed');
     }
