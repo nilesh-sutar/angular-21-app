@@ -28,4 +28,4 @@ jobs:
         if: github.event_name == 'push'
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./dist/angular21demo
+          publish_dir: ./dist/angular21demo/browser
