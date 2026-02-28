@@ -1,5 +1,5 @@
 import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import { provideRouter, withHashLocation } from '@angular/router';
 import { HTTP_INTERCEPTORS, provideHttpClient } from '@angular/common/http';
 
 import { routes } from './app.routes';
@@ -19,7 +19,7 @@ import { ProductEffects } from './states/products/product.effects';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
-    provideRouter(routes),
+    provideRouter(routes,withHashLocation()),
     { provide: HTTP_INTERCEPTORS, useClass: AppHttpInterceptor, multi: true },
     provideHttpClient(),
     provideStore({}),
