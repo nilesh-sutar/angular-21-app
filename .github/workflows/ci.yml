@@ -23,7 +23,14 @@ jobs:
       #   run: npm test --silent
       - name: Build
         run: |
-          npm run build -- --base-href=/angular-21-app/
+          # compute base href depending on branch
+          if [ "${GITHUB_REF_NAME}" = "main" ]; then
+            BASE_HREF="/angular-21-app/"
+          else
+            BASE_HREF="/angular-21-app/${GITHUB_REF_NAME}/"
+          fi
+          echo "Building with base href $BASE_HREF"
+          npm run build -- --base-href="$BASE_HREF"
           # ensure GitHub Pages serves static files, not Jekyll
           touch dist/angular21demo/browser/.nojekyll
 
