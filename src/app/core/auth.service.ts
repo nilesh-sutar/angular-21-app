@@ -1,22 +1,24 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
-import { User } from '../store/auth.store';
+import { environment } from '@env/environment';
+import { User } from '@interfaces';
 
 @Injectable({ providedIn: 'root' })
 export class AuthService {
     private _token: string | null = null;
     http = inject(HttpClient);
+    private apiUrl = environment.apiUrl;
 
     login(_username: string, _password: string) {
-        return this.http.post<{ token: string }>('https://fakestoreapi.com/auth/login', { username: _username, password: _password })
+        return this.http.post<{ accessToken: string }>(`${this.apiUrl}/auth/login`, { username: _username, password: _password, expiresInMins: 30 })
     }
 
     logout() {
         this._token = null;
     }
 
-   getUserData(id="1") {
-       return this.http.get<User>(`https://fakestoreapi.com/users/${id}`)
+    getCurrentUser() {
+        return this.http.get<User>(`${this.apiUrl}/auth/me`)
     }
 
     get token() {

@@ -1,5 +1,6 @@
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
+import { User } from '@interfaces';
 import { patchState, signalStore, withMethods, withProps, withState } from '@ngrx/signals';
 import { AuthService } from './../core/auth.service';
 export interface AuthState {
@@ -25,14 +26,47 @@ export const AuthStore = signalStore(
         authService: inject(AuthService),
         router: inject(Router)
     })),
+    withMethods(({ authService, ...store }) => ({
+        fetchUserData: async () => {
+            try {
+                const userData = await authService.getCurrentUser().toPromise();
+                patchState(store, { userData });
+                const authStoreData = { token: store.token(), userData };
+                localStorage.setItem('authStore', JSON.stringify(authStoreData));
+            } catch (error) {
+                console.error('Error fetching user data:', error);
+                patchState(store, { error: 'Failed to fetch user data' });
+            }
+        },
+    })),
     withMethods(({ authService, router, ...store }) => ({
+        init: () => {
+            const storedAuth = localStorage.getItem('authStore');
+            if (storedAuth) {
+                try {
+                    const authData = JSON.parse(storedAuth);
+                    if (authData.token && authData.userData) {
+                        patchState(store, {
+                            token: authData.token,
+                            userData: authData.userData,
+                            isAuthenticated: true
+                        });
+                    }
+                } catch (error) {
+                    console.error('Error parsing auth data from localStorage:', error);
+                    localStorage.removeItem('authStore');
+                }
+            }
+        },
         login: async (username: string, password: string) => {
             patchState(store, { isLoading: true, error: "" });
             try {
                 const response = await authService.login(username, password).toPromise();
-                patchState(store, { token: response?.token, isLoading: false, isAuthenticated: true });
-                const userData = await authService.getUserData().toPromise();
-                patchState(store, { userData: userData });
+                patchState(store, { token: response?.accessToken, isLoading: false, isAuthenticated: true });
+                localStorage.setItem('authStore', JSON.stringify({ token: response?.accessToken }));
+
+                // Fetch user data after successful login
+                store.fetchUserData();
             }
             catch (error: any) {
                 patchState(store, {
@@ -41,38 +75,10 @@ export const AuthStore = signalStore(
             }
         },
         logout: () => {
-            patchState(store, { token: null, isAuthenticated: false });
+            patchState(store, { token: null, userData: null, isAuthenticated: false });
+            localStorage.removeItem('authStore');
             router.navigate(['/auth/login']);
         }
     }))
 
 )
-
-export interface User {
-    address: Address
-    id: number
-    email: string
-    username: string
-    password: string
-    name: Name
-    phone: string
-    __v: number
-}
-
-export interface Address {
-    geolocation: Geolocation
-    city: string
-    street: string
-    number: number
-    zipcode: string
-}
-
-export interface Geolocation {
-    lat: string
-    long: string
-}
-
-export interface Name {
-    firstname: string
-    lastname: string
-}
