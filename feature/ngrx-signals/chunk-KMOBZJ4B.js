@@ -1,1 +1,0 @@
-import{Ob as s,ab as e,wb as o,xb as i}from"./chunk-4OTHZPA2.js";import"./chunk-7CGTOI24.js";var a=class n{constructor(){}ngOnInit(){}static \u0275fac=function(t){return new(t||n)};static \u0275cmp=e({type:n,selectors:[["app-not-found"]],decls:2,vars:0,template:function(t,m){t&1&&(o(0,"h2"),s(1,"Page Not Found"),i())},encapsulation:2})};export{a as NotFound};
