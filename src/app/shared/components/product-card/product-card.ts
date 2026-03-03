@@ -1,3 +1,4 @@
+import { NgOptimizedImage } from '@angular/common';
 import { ChangeDetectionStrategy, Component, computed, inject, input, output } from '@angular/core';
 import { Router, RouterLink } from "@angular/router";
 import { Product } from '@interfaces';
@@ -9,7 +10,7 @@ interface ProductCardConfig {
 }
 @Component({
   selector: 'app-product-card',
-  imports: [RouterLink, Button],
+  imports: [RouterLink, Button, NgOptimizedImage],
   templateUrl: './product-card.html',
   styleUrls: ['./product-card.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush

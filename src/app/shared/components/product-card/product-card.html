@@ -1,6 +1,6 @@
 <div class="card mb-4">
     <img class="card-img-top img-fluid mx-auto cursor-pointer" routerLink="/products/{{ product()?.id }}"
-        [src]="product()?.image" alt="Card image">
+        [ngSrc]="product()?.image ?? ''" alt="Card image" width="300" height="300">
     <div class="card-body">
         <h6 class="card-title text-truncate">{{ product()?.title }}</h6>
         <p class="card-text text-truncate">{{ product()?.description }}</p>
