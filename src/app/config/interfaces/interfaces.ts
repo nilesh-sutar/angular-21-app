@@ -1,13 +1,13 @@
-export interface Product {
-    id: number
-    title: string
-    price: number
-    description: string
-    category: string
-    image: string
-    quantity: number
-    isInCart: boolean
-}
+// export interface Product {
+//     id: number
+//     title: string
+//     price: number
+//     description: string
+//     category: string
+//     image: string
+//     quantity: number
+//     isInCart: boolean
+// }
 
 export interface User {
     id: number
@@ -95,3 +95,52 @@ export interface Crypto {
     wallet: string
     network: string
 }
+
+export interface Product {
+    id: number
+    title: string
+    description: string
+    category: string
+    price: number
+    discountPercentage: number
+    rating: number
+    stock: number
+    tags: string[]
+    brand: string
+    sku: string
+    weight: number
+    dimensions: Dimensions
+    warrantyInformation: string
+    shippingInformation: string
+    availabilityStatus: string
+    reviews: Review[]
+    returnPolicy: string
+    minimumOrderQuantity: number
+    meta: Meta
+    images: string[]
+    thumbnail: string
+    quantity: number
+    isInCart: boolean
+}
+
+export interface Dimensions {
+    width: number
+    height: number
+    depth: number
+}
+
+export interface Review {
+    rating: number
+    comment: string
+    date: string
+    reviewerName: string
+    reviewerEmail: string
+}
+
+export interface Meta {
+    createdAt: string
+    updatedAt: string
+    barcode: string
+    qrCode: string
+}
+

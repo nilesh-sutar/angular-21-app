@@ -1,15 +1,22 @@
 <div class="card mb-4">
     <img class="card-img-top img-fluid mx-auto cursor-pointer" routerLink="/products/{{ product()?.id }}"
-        [ngSrc]="product()?.image ?? ''" alt="Card image" width="300" height="300">
+        [ngSrc]="productImage()" alt="Card image" width="300" height="300">
     <div class="card-body">
         <h6 class="card-title text-truncate">{{ product()?.title }}</h6>
         <p class="card-text text-truncate">{{ product()?.description }}</p>
         <p>Category: {{ product()?.category }}</p>
-        <p>Price: ${{ product()?.price }}</p>
+        <app-rating [rating]="product()?.rating" (onClick)="openRatingModal()"
+            [reviewsCount]="product()?.reviews?.length" />
+        <p class="fs-4">
+            <strong class="text-success">{{product()?.discountPercentage}}%</strong>
+            <span class="text-secondary mx-2 text-decoration-line-through">{{ product()?.price }}</span>
+            <strong>${{discountedPrice()}}</strong>
+        </p>
         <div class="d-flex justify-content-between">
             @if(config().showAddToCart) {
             @if (isInCart() === false){
-            <app-button [config]="{color:'primary', label: buttonLabel()}" (onClick)="onAdd(product())">
+            <app-button [config]="{color:'primary', label: buttonLabel(), disabled : disableButton()}"
+                (onClick)="onAdd(product())">
                 <span class="material-icons" icon>
                     add_shopping_cart
                 </span>

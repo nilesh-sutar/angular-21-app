@@ -3,14 +3,23 @@ import { ChangeDetectionStrategy, Component, computed, input, output } from '@an
 @Component({
     selector: 'app-button',
     template: `
-        <button
-        [type]="finalConfig().type"
-        [disabled]="finalConfig().disabled"
-        [class]="'btn btn-'+finalConfig().color"
-        (click)="onClick.emit()">
-            <ng-content select="[icon]"></ng-content>
-            {{ finalConfig().label }}
-        </button>
+        @if (buttonType() === 'a') {
+            <a
+                [class]="'btn btn-'+finalConfig().color"
+                (click)="onClick.emit()">
+                <ng-content select="[icon]"></ng-content>
+                {{ finalConfig().label }}
+            </a>
+        } @else {
+            <button
+                [type]="finalConfig().type"
+                [disabled]="finalConfig().disabled"
+                [class]="'btn btn-'+finalConfig().color"
+                (click)="onClick.emit()">
+                <ng-content select="[icon]"></ng-content>
+                {{ finalConfig().label }}
+            </button>
+        }
     `,
     styles: [`button { display: inline-flex; align-items: center; gap: 0.5rem; }`],
     changeDetection: ChangeDetectionStrategy.OnPush
@@ -34,6 +43,8 @@ export class Button {
             anchor: c.anchor ?? false
         };
     });
+
+    buttonType = computed(() => this.finalConfig().anchor ? 'a' : 'button');
 
     onClick = output<void>();
 }

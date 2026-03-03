@@ -15,7 +15,7 @@ import { ProductSearchStore } from "src/app/store/product-search.store";
             <ul>
               @for (product of products.results(); track product.id) {
                   <li>
-                     <img ngSrc="{{ product.image }}" alt="{{ product.title }}" width="30" height="30" />
+                     <img ngSrc="{{ product.images[0] }}" alt="{{ product.title }}" width="30" height="30" />
                      <a routerLink="/products/{{ product.id }}" (click)="hideResults()">{{ product.title }}</a>
                   </li>
               }
