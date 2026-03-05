@@ -20,7 +20,7 @@ import { Rating } from 'src/app/shared/components/rating/rating';
     </div>
     <div class="modal-body">
       <div>
-        <app-rating [rating]="modalData().product?.rating" />
+        <app-rating [config]="{ rating: modalData().product?.rating }" />
         <p>based on {{ modalData().product?.reviews?.length }} Reviews</p>
       </div>
       <ul class="list-group">
@@ -28,7 +28,7 @@ import { Rating } from 'src/app/shared/components/rating/rating';
           <li class="list-group-item">
             <div class="d-flex justify-content-between gap-2">
               <div>
-                <app-rating [rating]="item.rating" [showRatingLabel]="false" />
+                <app-rating [config]="{ rating: item.rating, showRatingLabel: false }" />
                 <p>
                   {{ item.comment }}
                 </p>

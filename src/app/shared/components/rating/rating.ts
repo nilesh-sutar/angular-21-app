@@ -4,50 +4,65 @@ import { Component, computed, input, output } from '@angular/core';
 @Component({
   selector: 'app-rating',
   template: `
-    <a class="fs-5" [class.cursor-pointer]="pointerClass()" (click)="onClick.emit()">
-      <span class="badge bg-black d-inline-flex align-items-center gap-1">
-        {{ rating()?.toFixed(1) ?? 0 }}
-        <span class="material-icons fs-6" [ngClass]="'text-' + ratingClass()">star</span>
-        @if (reviewsCount()) {
-          | {{ reviewsCount() }}
+    <div class="fs-6 my-2" [class.cursor-pointer]="finalConfig().cursor" (click)="onClick.emit()">
+      <span
+        class="badge d-inline-flex align-items-center gap-1"
+        [ngClass]="'bg-' + ratingInfo().class"
+      >
+        {{ finalConfig().rating.toFixed(1) }}
+        <span class="material-icons fs-6">star</span>
+        @if (finalConfig().reviewsCount) {
+          | {{ finalConfig().reviewsCount }}
         }
       </span>
-      @if (showRatingLabel()) {
-        <span class="ms-2 badge" [ngClass]="'bg-' + ratingClass()">{{ ratingLabel() }}</span>
+      @if (finalConfig().showRatingLabel) {
+        <span class="ms-2 badge text-black rating-label">{{
+          ratingInfo().label
+        }}</span>
       }
-    </a>
+    </div>
   `,
-  styles: [``],
+  styles: [`.rating-label{background-color: rgba(245, 245, 245, 1.00)}`],
   imports: [NgClass],
 })
 export class Rating {
-  rating = input<number | undefined>(0);
-  reviewsCount = input<number | undefined>(0);
-  showRatingLabel = input<boolean>(true);
+  config = input<RatingConfig>({
+    rating: 0,
+    reviewsCount: 0,
+    showRatingLabel: true,
+    cursor: false,
+  });
+
+  finalConfig = computed(() => {
+    const c = this.config() || ({} as RatingConfig);
+    return {
+      rating: c.rating ?? 0,
+      reviewsCount: c.reviewsCount ?? 0,
+      showRatingLabel: c.showRatingLabel ?? true,
+      cursor: c.cursor ?? false,
+    };
+  });
+
   onClick = output<void>();
-  pointerClass = computed(() => (this.reviewsCount() ? 'cursor-pointer' : ''));
 
-  ratingClass = computed(() => {
-    const rating = this.rating();
-    if (!rating) return '';
+  // Optimized: Single computed returns both class and label
+  ratingInfo = computed(() => {
+    const rating = this.finalConfig().rating;
+    if (!rating) return { class: '', label: '' };
+
     if (rating >= 4) {
-      return 'success';
+      return { class: 'success', label: 'Excellent' };
     } else if (rating >= 2) {
-      return 'warning';
+      return { class: 'warning', label: 'Average' };
     } else {
-      return 'danger';
+      return { class: 'danger', label: 'Poor' };
     }
   });
+}
 
-  ratingLabel = computed(() => {
-    const rating = this.rating();
-    if (!rating) return '';
-    if (rating >= 4) {
-      return 'Excellent';
-    } else if (rating >= 2) {
-      return 'Average';
-    } else {
-      return 'Poor';
-    }
-  });
+export interface RatingConfig {
+  rating?: number;
+  reviewsCount?: number;
+  showRatingLabel?: boolean;
+  cursor?: boolean;
 }

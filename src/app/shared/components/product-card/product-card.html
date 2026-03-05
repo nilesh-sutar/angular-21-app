@@ -5,8 +5,8 @@
         <h6 class="card-title text-truncate">{{ product()?.title }}</h6>
         <p class="card-text text-truncate">{{ product()?.description }}</p>
         <p>Category: {{ product()?.category }}</p>
-        <app-rating [rating]="product()?.rating" (onClick)="openRatingModal()"
-            [reviewsCount]="product()?.reviews?.length" />
+        <app-rating [config]="{ rating: product()?.rating, cursor: true, reviewsCount: product()?.reviews?.length }"
+            (onClick)="openRatingModal()" />
         <p class="fs-4">
             <strong class="text-success">{{product()?.discountPercentage}}%</strong>
             <span class="text-secondary mx-2 text-decoration-line-through">{{ product()?.price }}</span>
