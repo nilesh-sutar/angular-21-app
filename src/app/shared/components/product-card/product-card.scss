@@ -2,6 +2,27 @@
     box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
     border: none;
 
+    .d-flex {
+        display: flex;
+        width: 100%;
+        gap: 20px;
+    }
+
+    .left-content {
+        flex: 1;
+
+        img {
+            border: 1px solid #ddd;
+            margin: 10px 0px 0 10px;
+            border-radius: 10px;
+        }
+    }
+
+    .right-content {
+        flex: 1;
+        min-width: 0;
+    }
+
     .card-img-top {
         height: 300px;
         padding: 20px;

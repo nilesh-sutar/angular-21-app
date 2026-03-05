@@ -5,21 +5,21 @@ import { ChangeDetectionStrategy, Component, computed, input, output } from '@an
   template: `
     @if (buttonType() === 'a') {
       <a
-        [class]="'btn btn-' + finalConfig().color + ' btn-' + finalConfig().size"
+        [class]="'btn btn-' + resolvedConfig().color + ' btn-' + resolvedConfig().size"
         (click)="onClick.emit()"
       >
         <ng-content select="[icon]"></ng-content>
-        {{ finalConfig().label }}
+        {{ resolvedConfig().label }}
       </a>
     } @else {
       <button
-        [type]="finalConfig().type"
-        [disabled]="finalConfig().disabled"
-        [class]="'btn btn-' + finalConfig().color + ' btn-' + finalConfig().size"
+        [type]="resolvedConfig().type"
+        [disabled]="resolvedConfig().disabled"
+        [class]="'btn btn-' + resolvedConfig().color + ' btn-' + resolvedConfig().size"
         (click)="onClick.emit()"
       >
         <ng-content select="[icon]"></ng-content>
-        {{ finalConfig().label }}
+        {{ resolvedConfig().label }}
       </button>
     }
   `,
@@ -35,17 +35,10 @@ import { ChangeDetectionStrategy, Component, computed, input, output } from '@an
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class Button {
-  config = input<buttonConfig>({
-    type: 'button',
-    label: 'Click Me',
-    color: 'primary',
-    disabled: false,
-    anchor: false,
-    size: 'sm',
-  });
+  config = input<ButtonConfig>({});
 
-  finalConfig = computed(() => {
-    const c = this.config() || ({} as buttonConfig);
+  resolvedConfig = computed(() => {
+    const c = this.config();
     return {
       type: c.type ?? 'button',
       label: c.label ?? 'Click Me',
@@ -56,12 +49,12 @@ export class Button {
     };
   });
 
-  buttonType = computed(() => (this.finalConfig().anchor ? 'a' : 'button'));
+  buttonType = computed(() => (this.resolvedConfig().anchor ? 'a' : 'button'));
 
   onClick = output<void>();
 }
 
-interface buttonConfig {
+interface ButtonConfig {
   type?: 'button' | 'submit';
   label?: string;
   color?: 'primary' | 'secondary' | 'danger' | 'success' | 'warning' | 'info' | 'light' | 'dark';

@@ -10,6 +10,8 @@ import { Rating } from '../rating/rating';
 
 interface ProductCardConfig {
   showAddToCart?: boolean;
+  showLeftContent?: boolean;
+  hideProductImage?: boolean;
 }
 @Component({
   selector: 'app-product-card',
@@ -21,14 +23,31 @@ interface ProductCardConfig {
 })
 export class ProductCard {
   product = input<Product | null>(null);
-  config = input<ProductCardConfig>({
-    showAddToCart: true,
+  config = input<ProductCardConfig>({});
+
+  // resolved config with defaults merged
+  resolvedConfig = computed(() => {
+    const c = this.config();
+    return {
+      showAddToCart: c.showAddToCart ?? true,
+      showLeftContent: c.showLeftContent ?? false,
+      hideProductImage: c.hideProductImage ?? false,
+    };
   });
+
   handleAdd = output<Product>();
   cartStore = inject(CartStore);
   router = inject(Router);
   modalService = inject(BsModalService);
   bsModalRef?: BsModalRef;
+
+  productImages = computed(() => {
+    const product = this.product();
+    if (product?.images.length == 1) {
+      return [product.images[0], product.images[0], product.images[0]];
+    }
+    return product ? product.images : [];
+  });
 
   onAdd(product: Product | null) {
     if (!product) return;

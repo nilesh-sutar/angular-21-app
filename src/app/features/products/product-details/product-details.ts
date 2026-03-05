@@ -18,7 +18,7 @@ export class ProductDetails {
   cartStore = inject(CartStore);
 
   constructor() {
-    this.route.params.pipe(takeUntilDestroyed()).subscribe(params => {
+    this.route.params.pipe(takeUntilDestroyed()).subscribe((params) => {
       const id = Number(params['id']);
       this.fetchProductById(id);
     });
@@ -32,5 +32,4 @@ export class ProductDetails {
   async onAdd(product: Product) {
     this.cartStore.addToCart(product);
   }
-
 }
