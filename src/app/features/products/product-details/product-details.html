@@ -3,9 +3,15 @@
     Loading product details...
 </div>
 } @else {
-<div class="row my-2 justify-content-center">
-    <div class="col-md-6">
-        <app-product-card [product]="product()" (handleAdd)="onAdd($event)" [config]="{showViewProduct:false}" />
-    </div>
-</div>
+<!-- <div class="row my-2 justify-content-center"> -->
+<!-- <div class="col-md-6">
+        @for(image of product()?.images; let i = $index; track i) {
+        <img class="img-fluid mb-2" [ngSrc]="image" alt="Product image" width="500" height="500">
+        }
+    </div> -->
+<!-- <div class="col-md-6"> -->
+<app-product-card [product]="product()" [config]="{ showLeftContent: true, hideProductImage: true }"
+    (handleAdd)="onAdd($event)" />
+<!-- </div> -->
+<!-- </div> -->
 }

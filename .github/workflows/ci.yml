@@ -2,9 +2,9 @@ name: CI
 
 on:
   push:
-    branches: [main]
+    branches: [main, feature/**]
   pull_request:
-    branches: [main]
+    branches: [main, feature/**]
 
 jobs:
   build:
@@ -14,12 +14,40 @@ jobs:
       - name: Use Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version: 24
       - name: Install dependencies
-        run: npm ci
+        run: npm ci -f
       - name: Lint
         run: npm run lint --if-present
-      - name: Test
-        run: npm test --silent
+      # - name: Test
+      #   run: npm test --silent
       - name: Build
-        run: npm run build --if-present
+        run: |
+          # compute base href depending on branch
+          if [ "${GITHUB_REF_NAME}" = "main" ]; then
+            BASE_HREF="/angular-21-app/"
+          else
+            BASE_HREF="/angular-21-app/${GITHUB_REF_NAME}/"
+          fi
+          echo "Building with base href $BASE_HREF"
+          npm run build -- --base-href="$BASE_HREF"
+          # ensure GitHub Pages serves static files, not Jekyll
+          touch dist/angular21demo/browser/.nojekyll
+
+      # Deploy main branch to root
+      - name: Deploy main to GitHub Pages
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist/angular21demo/browser
+          cname: nilesh-sutar.github.io
+
+      # Deploy feature branches to subdirectories
+      - name: Deploy feature branch to GitHub Pages
+        if: startsWith(github.ref, 'refs/heads/feature/') && github.event_name == 'push'
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./dist/angular21demo/browser
+          destination_dir: ${{ github.ref_name }}

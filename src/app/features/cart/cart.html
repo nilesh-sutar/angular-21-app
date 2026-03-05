@@ -1,37 +1,69 @@
+<h2>Cart</h2>
 @if(cartStore.products().length === 0) {
-<p>Your cart is empty.</p>
-<a routerLink="/products">Explore Products</a>
+<div class="card">
+    <div class="card-body">
+        <p>Your cart is empty.</p>
+        <a routerLink="/products">Explore Products</a>
+    </div>
+</div>
 }
 @else {
-<table class="table table-light">
-    <tbody>
-        @for (item of cartStore.products(); track item.id) {
-        <tr>
-            <td><img class="img-thumbnail" [routerLink]="'/products/' + item.id" [src]="item.image" alt=""></td>
-            <td><a [routerLink]="'/products/' + item.id">{{ item.title }}</a></td>
-            <td>{{ item.price }}</td>
-            <td>
-                <button class="btn btn-danger btn-sm" (click)="cartStore.removeFromCart(item)">Remove</button>
-            </td>
-            <td>
-                <button class="btn btn-danger btn-sm"
-                    (click)="item.quantity !== 1 ? cartStore.decrementQuantity(item) : cartStore.removeFromCart(item)">-</button>
-                {{ item.quantity }}
-                <button class="btn btn-danger btn-sm" (click)="cartStore.incrementQuantity(item)">+</button>
-            </td>
-        </tr>
-        }
-    </tbody>
-    <tfoot>
-        <tr>
-            <td colspan="3"><strong>Total:</strong> {{ cartStore.totalPrice() | currency}}</td>
-            <td>
-                <button class="btn btn-warning" (click)="cartStore.emptyCart()">Empty Cart</button>
-            </td>
-            <td>
-                <button class="btn btn-warning">Checkout</button>
-            </td>
-        </tr>
-    </tfoot>
-</table>
+<div class="row">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                Your Shopping Cart
+            </div>
+            <div class="card-body">
+                <table class="table table-light">
+                    <tbody>
+                        @for (item of cartStore.products(); track item.id) {
+                        <tr>
+                            <td>
+                                <div class="d-flex align-items-center gap-3">
+                                    <img class="img-thumbnail" [routerLink]="'/products/' + item.id"
+                                        [ngSrc]="item.images[0]" alt="" width="100" height="100">
+                                    <div [class.loading]="cartStore.loadingProductId() === item.id"
+                                        class="d-flex gap-3">
+                                        <button class="btn btn-danger btn-sm"
+                                            (click)="item.quantity !== 1 ? cartStore.decrementQuantity(item) : onRemove(item)">-</button>
+                                        {{ item.quantity }}
+                                        <button class="btn btn-danger btn-sm"
+                                            (click)="cartStore.incrementQuantity(item)">+</button>
+                                    </div>
+                                </div>
+                            </td>
+                            <td><a class="d-block" [routerLink]="'/products/' + item.id">{{ item.title }}</a>
+                                <p>
+                                    {{ item.price | currency }}
+                                </p>
+                                <button class="btn btn-danger btn-sm" (click)="onRemove(item)">Remove</button>
+                            </td>
+                        </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="2">
+                                <button class="btn btn-warning" (click)="cartStore.emptyCart()">Empty Cart</button>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                Order Summary
+            </div>
+            <div class="card-body">
+                <p class="card-text">Total Price: <strong>{{ cartStore.totalPrice() | currency}}</strong></p>
+                <button class="btn btn-primary btn-block">Proceed to Checkout</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 }

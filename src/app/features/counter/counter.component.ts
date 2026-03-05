@@ -1,8 +1,4 @@
 import { Component, inject } from '@angular/core';
-import { Store } from '@ngrx/store';
-import { AppState } from '@states/app.state';
-import { selectCount } from '@states/counter/counter.selectors';
-import { decrement, increment, reset } from '@states/counter/counter.actions';
 import { CounterStore } from 'src/app/store/counter.store';
 
 @Component({
@@ -21,20 +17,6 @@ import { CounterStore } from 'src/app/store/counter.store';
 })
 export class CounterComponent {
 
-  private store = inject(Store<AppState>);
-  count$ = this.store.select(selectCount);
   counterState = inject(CounterStore)
-
-  increment() {
-    this.store.dispatch(increment());
-  }
-
-  decrement() {
-    this.store.dispatch(decrement());
-  }
-
-  reset() {
-    this.store.dispatch(reset());
-  }
 
 }
